@@ -69,19 +69,14 @@ exports._signAndSend = exports.buildSubmittableExtrinsic = exports.txSignAndSend
 var query_1 = require("./query");
 function txSignAndSend(nativeAPI, nativeContract, keyringPair, title, eventHandler, args, gasLimitAndValue) {
     return __awaiter(this, void 0, void 0, function () {
-        var _gasLimitAndValue, estimatedGasLimit, estimatedGasLimitAndValue, submittableExtrinsic;
-        var _a;
-        return __generator(this, function (_b) {
-            switch (_b.label) {
+        var _gasLimitAndValue, estimatedGasLimitAndValue, submittableExtrinsic;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
                 case 0: return [4 /*yield*/, (0, query_1._genValidGasLimitAndValue)(nativeAPI, gasLimitAndValue)];
                 case 1:
-                    _gasLimitAndValue = _b.sent();
-                    return [4 /*yield*/, (_a = nativeContract.query)[title].apply(_a, __spreadArray([keyringPair.address,
-                            _gasLimitAndValue], args, false))];
-                case 2:
-                    estimatedGasLimit = (_b.sent()).gasRequired;
+                    _gasLimitAndValue = _a.sent();
                     estimatedGasLimitAndValue = {
-                        gasLimit: estimatedGasLimit,
+                        gasLimit: gasLimitAndValue.gasLimit,
                         value: _gasLimitAndValue.value,
                     };
                     submittableExtrinsic = buildSubmittableExtrinsic(nativeAPI, nativeContract, title, args, estimatedGasLimitAndValue);
@@ -95,7 +90,7 @@ function buildSubmittableExtrinsic(api, nativeContract, title, args, gasLimitAnd
     var _a;
     if (nativeContract.tx[title] == null) {
         var error = {
-            issue: 'METHOD_DOESNT_EXIST',
+            issue: "METHOD_DOESNT_EXIST",
             texts: ["Method name: '".concat(title, "'")],
         };
         throw error;
@@ -130,11 +125,11 @@ function _signAndSend(registry, extrinsic, signer, eventHandler) {
                             result.events
                                 .filter(function (_a) {
                                 var section = _a.event.section;
-                                return section === 'system';
+                                return section === "system";
                             })
                                 .forEach(function (event) {
                                 var _a = event.event, data = _a.data, method = _a.method;
-                                if (method === 'ExtrinsicFailed') {
+                                if (method === "ExtrinsicFailed") {
                                     var dispatchError = data[0];
                                     var message = dispatchError.type;
                                     if (dispatchError.isModule) {
@@ -142,11 +137,11 @@ function _signAndSend(registry, extrinsic, signer, eventHandler) {
                                             var mod = dispatchError.asModule;
                                             var error = registry.findMetaError(new Uint8Array([
                                                 mod.index.toNumber(),
-                                                mod.error.toNumber()
+                                                mod.error.toNumber(),
                                             ]));
                                             message = "".concat(error.section, ".").concat(error.name).concat(Array.isArray(error.docs)
-                                                ? "(".concat(error.docs.join(''), ")")
-                                                : error.docs || '');
+                                                ? "(".concat(error.docs.join(""), ")")
+                                                : error.docs || "");
                                         }
                                         catch (error) {
                                             // swallow
@@ -157,7 +152,7 @@ function _signAndSend(registry, extrinsic, signer, eventHandler) {
                                     };
                                     reject(actionStatus);
                                 }
-                                else if (method === 'ExtrinsicSuccess') {
+                                else if (method === "ExtrinsicSuccess") {
                                     actionStatus.result = result;
                                     resolve(actionStatus);
                                 }
