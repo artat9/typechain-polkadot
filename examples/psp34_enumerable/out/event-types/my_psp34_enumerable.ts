@@ -1,3 +1,2 @@
-import type {ReturnNumber} from "@727-ventures/typechain-types";
-import type * as ReturnTypes from '../types-returns/my_psp34_enumerable';
-
+import type { ReturnNumber } from "@artat9/typechain-types";
+import type * as ReturnTypes from "../types-returns/my_psp34_enumerable";

@@ -1,8 +1,11 @@
-import {TypechainPlugin} from "./interfaces";
-import {assureDirExists, generateProjectStructure} from "../utils/directories";
+import { TypechainPlugin } from "./interfaces";
+import {
+	assureDirExists,
+	generateProjectStructure,
+} from "../utils/directories";
 import FsAPI from "fs";
 import PathAPI from "path";
-import {preprocessABI} from "../utils/abi";
+import { preprocessABI } from "../utils/abi";
 import TypesArgumentsPlugin from "../generators/types-arguments";
 import TypesReturnsPlugin from "../generators/types-returns";
 import QueryPlugin from "../generators/query";
@@ -28,42 +31,35 @@ export default class TypechainPolkadot {
 		this.plugins.push(...defaultPlugins);
 	}
 
-	async run(
-		absPathToABIs: string,
-		absPathToOutput: string
-	) {
+	async run(absPathToABIs: string, absPathToOutput: string) {
 		generateProjectStructure(absPathToOutput);
 
 		for (const plugin of this.plugins) {
 			if (plugin.beforeRun) {
-				await plugin.beforeRun(
-					absPathToABIs,
-					absPathToOutput
-				);
+				await plugin.beforeRun(absPathToABIs, absPathToOutput);
 			}
 
-			assureDirExists(
-				absPathToOutput,
-				plugin.outputDir
-			);
+			assureDirExists(absPathToOutput, plugin.outputDir);
 		}
 
 		const fullFileNames = FsAPI.readdirSync(absPathToABIs);
 
-		for(const fullFileName of fullFileNames) {
-			if( !fullFileName.endsWith('.json') || fullFileName.endsWith('.rustc_info.json') ) continue;
+		for (const fullFileName of fullFileNames) {
+			if (
+				!fullFileName.endsWith(".json") ||
+				fullFileName.endsWith(".rustc_info.json")
+			)
+				continue;
 
 			const fileName = fullFileName.slice(0, -5);
-			const _abiStr = FsAPI.readFileSync( PathAPI.resolve(absPathToABIs, fullFileName), 'utf8' );
+			const _abiStr = FsAPI.readFileSync(
+				PathAPI.resolve(absPathToABIs, fullFileName),
+				"utf8"
+			);
 			const abi = preprocessABI(_abiStr);
 
 			for (const plugin of this.plugins) {
-				await plugin.generate(
-					abi,
-					fileName,
-					absPathToABIs,
-					absPathToOutput,
-				);
+				await plugin.generate(abi, fileName, absPathToABIs, absPathToOutput);
 			}
 		}
 	}
@@ -72,10 +68,13 @@ export default class TypechainPolkadot {
 		const plugins: TypechainPlugin[] = [];
 		for (const fileName of fileNames) {
 			const plugin = await import(fileName);
-			plugins.push(new plugin.default);
+			plugins.push(new plugin.default());
 		}
 
-		console.log('Succesfully loaded plugins: ', plugins.map(p => p.name).join(', '));
+		console.log(
+			"Succesfully loaded plugins: ",
+			plugins.map((p) => p.name).join(", ")
+		);
 
 		this.plugins.push(...plugins);
 

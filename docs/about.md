@@ -150,7 +150,7 @@ Add the following to your `package.json`:
 ```json
 "dependencies": {
 	"@727-ventures/typechain-compiler": "^0.5.16",
-	"@727-ventures/typechain-types": "^0.0.22",
+	"@artat9/typechain-types": "^0.0.22",
 	"@types/node": "^17.0.34",
 	"ts-node": "^10.7.0",
 	"typescript": "^4.6.4",
