@@ -32,7 +32,7 @@ import type { Registry } from "@polkadot/types-codec/types";
 import type { ApiPromise, SubmittableResult } from "@polkadot/api";
 // @ts-ignore
 import type { EventRecord } from "@polkadot/api/submittable";
-import { TypeTS } from "@727-ventures/typechain-polkadot-parser/src/types/TypeInfo";
+import { TypeTS } from "@artat9/typechain-polkadot-parser/src/types/TypeInfo";
 import { convertWeight } from "@polkadot/api-contract/base/util";
 import { Weight, WeightV2 } from "@polkadot/types/interfaces";
 import { BN_HUNDRED, BN_ZERO } from "@polkadot/util";
@@ -81,7 +81,7 @@ export async function txSignAndSend(
 
 	// temp hack
 	const estimatedGasLimitAndValue = {
-		gasLimit: gasLimitAndValue.gasLimit,
+		gasLimit: _gasLimitAndValue.gasLimit,
 		value: _gasLimitAndValue.value,
 	};
 

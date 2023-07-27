@@ -76,7 +76,7 @@ function txSignAndSend(nativeAPI, nativeContract, keyringPair, title, eventHandl
                 case 1:
                     _gasLimitAndValue = _a.sent();
                     estimatedGasLimitAndValue = {
-                        gasLimit: gasLimitAndValue.gasLimit,
+                        gasLimit: _gasLimitAndValue.gasLimit,
                         value: _gasLimitAndValue.value,
                     };
                     submittableExtrinsic = buildSubmittableExtrinsic(nativeAPI, nativeContract, title, args, estimatedGasLimitAndValue);
